@@ -5,5 +5,6 @@ Independent pre-action review for AI agents.
 - Site: https://secondlook.edgecasesystems.com/
 - API: https://secondlook.edgecasesystems.workers.dev/
 - OpenAPI: https://secondlook.edgecasesystems.workers.dev/openapi.json
+- Service manifest: https://secondlook.edgecasesystems.workers.dev/.well-known/secondlook.json
 - Boundary: SecondLook reviews intended actions but never authorizes, executes, or supplies missing authority.
 - Statuses: no_material_concern_found, material_concern_found, insufficient_information, human_review_required
