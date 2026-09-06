@@ -2,7 +2,7 @@
 
 Independent pre-action review for AI agents.
 
-- Site: https://secondlook.edgecasesystems.com/
+- Site: https://secondlook-site.edgecasesystems.workers.dev/
 - API: https://secondlook.edgecasesystems.workers.dev/
 - OpenAPI: https://secondlook.edgecasesystems.workers.dev/openapi.json
 - Service manifest: https://secondlook.edgecasesystems.workers.dev/.well-known/secondlook.json
