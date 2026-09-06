@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "secondlook-site",
+  "compatibility_date": "2026-09-06",
+  "assets": {
+    "directory": "."
+  },
+  "workers_dev": true,
+  "preview_urls": false
+}
