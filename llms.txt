@@ -8,3 +8,5 @@ Independent pre-action review for AI agents.
 - Service manifest: https://secondlook.edgecasesystems.workers.dev/.well-known/secondlook.json
 - Boundary: SecondLook reviews intended actions but never authorizes, executes, or supplies missing authority.
 - Statuses: no_material_concern_found, material_concern_found, insufficient_information, human_review_required
+- Availability: paid public service is currently limited to service use in the 50 U.S. states and District of Columbia; U.S. territories are unavailable.
+- Jurisdiction headers: paid requests declare X-SecondLook-Service-Use-Country: US and X-SecondLook-Service-Use-Region with the applicable two-letter state or DC code.
