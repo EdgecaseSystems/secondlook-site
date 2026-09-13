@@ -1,0 +1,59 @@
+name: Static site verification
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate static contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          required = ["index.html", "styles.css", "robots.txt", "sitemap.xml", "llms.txt", "wrangler.jsonc", ".assetsignore"]
+          for name in required:
+              path = Path(name)
+              if not path.is_file() or path.stat().st_size == 0:
+                  raise SystemExit(f"missing or empty required file: {name}")
+
+          html = Path("index.html").read_text(encoding="utf-8")
+          parser = HTMLParser()
+          parser.feed(html)
+          parser.close()
+          canonical = 'https://secondlook-site.edgecasesystems.workers.dev/'
+          api = 'https://secondlook.edgecasesystems.workers.dev/'
+          if f'<link rel="canonical" href="{canonical}">' not in html:
+              raise SystemExit("canonical site URL missing from index.html")
+          if api not in html:
+              raise SystemExit("live API URL missing from index.html")
+
+          ET.parse("sitemap.xml")
+          robots = Path("robots.txt").read_text(encoding="utf-8")
+          if canonical + "sitemap.xml" not in robots:
+              raise SystemExit("robots.txt sitemap URL is inconsistent")
+          llms = Path("llms.txt").read_text(encoding="utf-8")
+          if api not in llms:
+              raise SystemExit("live API URL missing from llms.txt")
+          ignored = Path(".assetsignore").read_text(encoding="utf-8").splitlines()
+          if ".github/**" not in ignored:
+              raise SystemExit(".github workflows must be excluded from static assets")
+          PY
+      - name: Wrangler static-assets dry run
+        run: npx --yes wrangler@4.131.0 deploy --dry-run
